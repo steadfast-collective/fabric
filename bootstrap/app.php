@@ -40,7 +40,9 @@ $app->singleton(
     Package Bootstrapper Constants
 */
 
-define('STUBS_DIRECTORY', __DIR__.'/../stubs');
+if (! defined('STUBS_DIRECTORY')) {
+    define('STUBS_DIRECTORY', __DIR__.'/../stubs');
+}
 
 /*
 |--------------------------------------------------------------------------

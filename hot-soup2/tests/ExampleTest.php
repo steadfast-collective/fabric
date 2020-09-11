@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Damcclean\HotSoup2\Tests;
 
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
     /** @test */
-    public function true_can_be_asserted()
+    public function true_is_true()
     {
         $this->assertTrue(true);
     }

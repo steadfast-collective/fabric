@@ -69,6 +69,18 @@ class BootstrapLaravelCommand extends Command
             });
         }
 
+        if ($this->flags['params']['config'] === true) {
+            $this->task('Adding Config', function () {
+                File::makeDirectory($this->packageDirectory.'/config');
+                File::copy(STUBS_DIRECTORY.'/dummy-config.php', $this->packageDirectory.'/config/dummy-package.php');
+
+                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
+                $serviceProvider = str_replace('#CONFIG#', File::get(STUBS_DIRECTORY.'/laravel-boot-config.php'), $serviceProvider);
+
+                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
+            });
+        }
+
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))
                 ->each(function (SplFileInfo $file) {
@@ -87,6 +99,8 @@ class BootstrapLaravelCommand extends Command
                     $contents = str_replace('DummyPackageFacade', Str::studly($this->packageName).'Facade', $contents);
 
                     if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
+                        // TODO: remove left over temp comments, like '#MIGRATIONS#'
+
                         File::put($file->getPath().'/'.Str::studly($this->packageName).'ServiceProvider.php', $contents);
                         File::delete($file->getPathname());
 
@@ -102,6 +116,8 @@ class BootstrapLaravelCommand extends Command
 
                     File::put($file->getPathname(), $contents);
                 });
+
+            // TODO: Run php cs fixer to lint the service provider etc
         });
 
         $this->task('Composer Install', function () {

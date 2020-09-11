@@ -44,7 +44,7 @@ class BootstrapLaravelCommand extends Command
             File::copyDirectory(STUBS_DIRECTORY.'/laravel', $this->packageDirectory);
         });
 
-        if (in_array('tests', $this->flags['params']) && $this->flags['params']['tests'] === true) {
+        if ($this->flags['params']['tests'] === true) {
             $this->task('Adding Tests', function () {
                 File::copyDirectory(STUBS_DIRECTORY.'/laravel-tests/tests', $this->packageDirectory.'/tests');
                 File::copy(STUBS_DIRECTORY.'/laravel-tests/phpunit.xml', $this->packageDirectory.'/phpunit.xml');
@@ -53,6 +53,17 @@ class BootstrapLaravelCommand extends Command
                 $composerManifest['autoload-dev']['psr-4'][Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\"] = "tests";
                 $composerManifest['require-dev']['orchestra/testbench'] = '^4.0|^5.0|^6.0';
                 $composerManifest['require-dev']['phpunit/phpunit'] = "^8.0|^9.0";
+
+                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_PRETTY_PRINT));
+            });
+        }
+
+        if ($this->flags['params']['facade'] === true) {
+            $this->task('Adding Facade', function () {
+                File::copy(STUBS_DIRECTORY.'/DummyPackageFacade.php', $this->packageDirectory.'/src/DummyPackageFacade.php');
+
+                $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
+                $composerManifest['extra']['laravel']['aliases'][Str::studly($this->packageName)] = 'DummyVendor\\DummyPackage\\DummyPackageFacade';
 
                 File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_PRETTY_PRINT));
             });
@@ -72,10 +83,18 @@ class BootstrapLaravelCommand extends Command
                     $contents = str_replace('dummy-package', $this->packageName, $contents);
 
                     // Classes
-                    // $contents = str_replace('DummyClass', Str::studly($this->packageName), $contents);
+                    $contents = str_replace('DummyPackageServiceProvider', Str::studly($this->packageName).'ServiceProvider', $contents);
+                    $contents = str_replace('DummyPackageFacade', Str::studly($this->packageName).'Facade', $contents);
 
                     if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
                         File::put($file->getPath().'/'.Str::studly($this->packageName).'ServiceProvider.php', $contents);
+                        File::delete($file->getPathname());
+
+                        return;
+                    }
+
+                    if ($file->getFilename() === 'DummyPackageFacade.php') {
+                        File::put($file->getPath().'/'.Str::studly($this->packageName).'Facade.php', $contents);
                         File::delete($file->getPathname());
 
                         return;

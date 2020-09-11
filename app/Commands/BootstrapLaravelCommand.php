@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 
 class BootstrapLaravelCommand extends Command
 {
-    protected $signature = 'laravel {name} {--tests} {--facade} {--config} {--views} {--lang} {--routes}';
+    protected $signature = 'laravel {name} {--tests} {--facade} {--config} {--views} {--lang} {--routes} {--migrations}';
     protected $description = 'Bootstrap a Laravel package.';
 
     protected $flags;
@@ -30,6 +30,7 @@ class BootstrapLaravelCommand extends Command
                 'views'  => $this->option('views'),
                 'lang'   => $this->option('lang'),
                 'routes' => $this->option('routes'),
+                'migrations' => $this->option('migrations'),
             ],
         ];
 

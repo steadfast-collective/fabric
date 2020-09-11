@@ -1,0 +1,10 @@
+{
+    "name": "dummy-vendor/dummy-package",
+    "description": "dummy-description",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "DummyVendor\\DummyPackage\\": "src"
+        }
+    }
+}

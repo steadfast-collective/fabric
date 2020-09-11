@@ -51,9 +51,10 @@ class BootstrapLaravelCommand extends Command
 
                 $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
                 $composerManifest['autoload-dev']['psr-4'][Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\"] = "tests";
-                $composerManifest['require-dev']['phpunit/phpunit'] = "^9.3";
+                $composerManifest['require-dev']['orchestra/testbench'] = '^4.0|^5.0|^6.0';
+                $composerManifest['require-dev']['phpunit/phpunit'] = "^8.0|^9.0";
 
-                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_FORCE_OBJECT|JSON_PRETTY_PRINT));
+                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_PRETTY_PRINT));
             });
         }
 
@@ -71,10 +72,10 @@ class BootstrapLaravelCommand extends Command
                     $contents = str_replace('dummy-package', $this->packageName, $contents);
 
                     // Classes
-                    $contents = str_replace('DummyClass', Str::studly($this->packageName), $contents);
+                    // $contents = str_replace('DummyClass', Str::studly($this->packageName), $contents);
 
-                    if ($file->getFilename() === 'DummyClass.php') {
-                        File::put($file->getPath().'/'.Str::studly($this->packageName).'.php', $contents);
+                    if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
+                        File::put($file->getPath().'/'.Str::studly($this->packageName).'ServiceProvider.php', $contents);
                         File::delete($file->getPathname());
 
                         return;

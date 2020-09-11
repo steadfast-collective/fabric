@@ -4,6 +4,7 @@
     "type": "project",
     "require": {
         "php": "^7.3",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "laravel-zero/framework": "^8.0",
         "nunomaduro/laravel-console-task": "^1.5"
     },

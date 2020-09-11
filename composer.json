@@ -1,4 +1,6 @@
 {
+    "name": "package-bootstrapper",
+    "description": "Allows developers to easilly bootstrap PHP, Laravel and Statamic packages.",
     "type": "project",
     "require": {
         "php": "^7.3",

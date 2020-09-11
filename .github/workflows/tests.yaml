@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.2, 7.3, 7.4]
+        php: [7.3, 7.4]
         os: [ubuntu-latest]
 
     name: PHP ${{ matrix.php }} ${{ matrix.os }}

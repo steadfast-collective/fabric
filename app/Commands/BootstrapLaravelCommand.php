@@ -82,6 +82,19 @@ class BootstrapLaravelCommand extends Command
             });
         }
 
+        if ($this->flags['params']['views'] === true) {
+            $this->task('Adding Views', function () {
+                File::makeDirectory($this->packageDirectory.'/resources');
+                File::makeDirectory($this->packageDirectory.'/resources/views');
+                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/resources/views/.gitkeep');
+
+                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
+                $serviceProvider = str_replace('#VIEWS#', File::get(STUBS_DIRECTORY.'/laravel-boot-views.php'), $serviceProvider);
+
+                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
+            });
+        }
+
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))
                 ->each(function (SplFileInfo $file) {

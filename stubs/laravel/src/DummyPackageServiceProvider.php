@@ -9,6 +9,7 @@ class DummyPackageServiceProvider extends ServiceProvider
     public function boot()
     {
         #CONFIG#
+        #VIEWS#
         //
     }
 

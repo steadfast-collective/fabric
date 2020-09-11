@@ -46,7 +46,7 @@ class BootstrapPHPCommand extends Command
 
                 $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
                 $composerManifest['autoload-dev']['psr-4'][Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\"] = "tests";
-                $composerManifest['require-dev']['phpunit//phpunit'] = "^9.3";
+                $composerManifest['require-dev']['phpunit/phpunit'] = "^9.3";
 
                 File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_FORCE_OBJECT|JSON_PRETTY_PRINT));
             });

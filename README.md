@@ -1,6 +1,6 @@
 # Package Bootstrapper
 
-Package Bootstrapper is a command line utility you can use to quickly scaffold out PHP, [Laravel](https://laravel.com) & [Statamic](https://statamic.com) packages.
+Package Bootstrapper is a command line utility you can use to quickly scaffold out PHP and [Laravel](https://laravel.com) packages.
 
 ## Installation
 
@@ -43,7 +43,3 @@ package-bootstrapper laravel steadfastcollective/cashier-extended --tests --faca
 | --lang       | Creates an empty lang directory and hooks it up in your service provider.       |
 | --routes     | Creates an empty routes file and hooks it up in your service provider.          |
 | --migrations | Creates an empty migrations directory and hooks it up in your service provider. |
-
-### Statamic
-
-TODO

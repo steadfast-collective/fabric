@@ -36,7 +36,7 @@ class BootstrapPHPCommand extends Command
             Stubs::mergeManifest([
                 'autoload-dev' => [
                     'psr-4' => [
-                        Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\" => "tests",
+                        Str::studly($flags->vendorName())."\\".Str::studly($flags->packageName())."\\Tests\\" => "tests",
                     ],
                 ],
                 'require-dev' => [
@@ -45,24 +45,24 @@ class BootstrapPHPCommand extends Command
             ], $flags);
         });
 
-        $this->task('Swapping namespaces, classes, etc', function () {
-            collect(File::allFiles($this->packageDirectory))
-                ->each(function (SplFileInfo $file) {
+        $this->task('Swapping namespaces, classes, etc', function () use ($flags) {
+            collect(File::allFiles($flags->packageDirectory()))
+                ->each(function (SplFileInfo $file) use ($flags) {
                     $contents = $file->getContents();
 
                     // Vendor
-                    $contents = str_replace('DummyVendor', Str::studly($this->vendorName), $contents);
-                    $contents = str_replace('dummy-vendor', $this->vendorName, $contents);
+                    $contents = str_replace('DummyVendor', Str::studly($flags->vendorName()), $contents);
+                    $contents = str_replace('dummy-vendor', $flags->vendorName(), $contents);
 
                     // Package Name
-                    $contents = str_replace('DummyPackage', Str::studly($this->packageName), $contents);
-                    $contents = str_replace('dummy-package', $this->packageName, $contents);
+                    $contents = str_replace('DummyPackage', Str::studly($flags->packageName()), $contents);
+                    $contents = str_replace('dummy-package', $flags->packageName(), $contents);
 
                     // Classes
-                    $contents = str_replace('DummyClass', Str::studly($this->packageName), $contents);
+                    $contents = str_replace('DummyClass', Str::studly($flags->packageName()), $contents);
 
                     if ($file->getFilename() === 'DummyClass.php') {
-                        File::put($file->getPath().'/'.Str::studly($this->packageName).'.php', $contents);
+                        File::put($file->getPath().'/'.Str::studly($flags->packageName()).'.php', $contents);
                         File::delete($file->getPathname());
 
                         return;
@@ -72,10 +72,10 @@ class BootstrapPHPCommand extends Command
                 });
         });
 
-        $this->task('Composer Install', function () {
+        $this->task('Composer Install', function () use ($flags) {
             $this->line('');
 
-            $process = new Process(['composer install'], $this->packageDirectory);
+            $process = new Process(['composer install'], $flags->packageDirectory());
             $process->run();
         });
     }

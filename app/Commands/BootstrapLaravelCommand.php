@@ -54,7 +54,7 @@ class BootstrapLaravelCommand extends Command
 
         // Facade
         $this->task('Facade', function () use ($flags) {
-        if (! $this->hasParam('facade')) {
+        if (! $flags->hasParam('facade')) {
                 return;
             }
 
@@ -128,34 +128,34 @@ class BootstrapLaravelCommand extends Command
             Stubs::fillServiceProviderStub('MIGRATIONS', 'laravel-boot-migrations.php', $flags);
         });
 
-        $this->task('Swapping namespaces, classes, etc', function () {
-            collect(File::allFiles($this->packageDirectory))
-                ->each(function (SplFileInfo $file) {
+        $this->task('Swapping namespaces, classes, etc', function () use ($flags) {
+            collect(File::allFiles($flags->packageDirectory()))
+                ->each(function (SplFileInfo $file) use ($flags) {
                     $contents = $file->getContents();
 
                     // Vendor
-                    $contents = str_replace('DummyVendor', Str::studly($this->vendorName), $contents);
-                    $contents = str_replace('dummy-vendor', $this->vendorName, $contents);
+                    $contents = str_replace('DummyVendor', Str::studly($flags->vendorName()), $contents);
+                    $contents = str_replace('dummy-vendor', $flags->vendorName(), $contents);
 
                     // Package Name
-                    $contents = str_replace('DummyPackage', Str::studly($this->packageName), $contents);
-                    $contents = str_replace('dummy-package', $this->packageName, $contents);
+                    $contents = str_replace('DummyPackage', Str::studly($flags->packageName()), $contents);
+                    $contents = str_replace('dummy-package', $flags->packageName(), $contents);
 
                     // Classes
-                    $contents = str_replace('DummyPackageServiceProvider', Str::studly($this->packageName).'ServiceProvider', $contents);
-                    $contents = str_replace('DummyPackageFacade', Str::studly($this->packageName).'Facade', $contents);
+                    $contents = str_replace('DummyPackageServiceProvider', Str::studly($flags->packageName()).'ServiceProvider', $contents);
+                    $contents = str_replace('DummyPackageFacade', Str::studly($flags->packageName()).'Facade', $contents);
 
                     if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
                         // TODO: remove left over temp comments, like '#MIGRATIONS#'
 
-                        File::put($file->getPath().'/'.Str::studly($this->packageName).'ServiceProvider.php', $contents);
+                        File::put($file->getPath().'/'.Str::studly($flags->packageName()).'ServiceProvider.php', $contents);
                         File::delete($file->getPathname());
 
                         return;
                     }
 
                     if ($file->getFilename() === 'DummyPackageFacade.php') {
-                        File::put($file->getPath().'/'.Str::studly($this->packageName).'Facade.php', $contents);
+                        File::put($file->getPath().'/'.Str::studly($flags->packageName()).'Facade.php', $contents);
                         File::delete($file->getPathname());
 
                         return;
@@ -167,10 +167,10 @@ class BootstrapLaravelCommand extends Command
             // TODO: Run php cs fixer to lint the service provider etc
         });
 
-        $this->task('Composer Install', function () {
+        $this->task('Composer Install', function () use ($flags) {
             $this->line('');
 
-            $process = new Process(['composer install'], $this->packageDirectory);
+            $process = new Process(['composer install'], $flags->packageDirectory());
             $process->run();
         });
     }

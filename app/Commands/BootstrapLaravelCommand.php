@@ -73,7 +73,7 @@ class BootstrapLaravelCommand extends Command
         if ($this->flags['params']['config'] === true) {
             $this->task('Adding Config', function () {
                 File::makeDirectory($this->packageDirectory.'/config');
-                File::copy(STUBS_DIRECTORY.'/dummy-config.php', $this->packageDirectory.'/config/dummy-package.php');
+                File::copy(STUBS_DIRECTORY.'/laravel-config-dummy.php', $this->packageDirectory.'/config/dummy-package.php');
 
                 $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
                 $serviceProvider = str_replace('#CONFIG#', File::get(STUBS_DIRECTORY.'/laravel-boot-config.php'), $serviceProvider);

@@ -10,7 +10,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
-class BootstrapPHPCommand extends Command
+class PHPCommand extends Command
 {
     protected $signature = 'php {name} {--tests}';
     protected $description = 'Bootstrap a PHP package.';

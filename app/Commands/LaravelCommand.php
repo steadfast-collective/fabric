@@ -10,7 +10,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
-class BootstrapLaravelCommand extends Command
+class LaravelCommand extends Command
 {
     protected $signature = 'laravel {name} {--tests} {--facade} {--config} {--views} {--lang} {--routes} {--migrations}';
     protected $description = 'Bootstrap a Laravel package.';

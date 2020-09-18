@@ -1,11 +1,11 @@
-# Package Bootstrapper
+# Fabric
 
-Package Bootstrapper is a command line utility you can use to quickly scaffold out PHP and [Laravel](https://laravel.com) packages.
+Fabric is a command-line utility to quickly scaffold PHP and Laravel packages.
 
 ## Installation
 
 ```
-composer global require steadfastcollective/package-bootstrapper
+composer global require steadfastcollective/fabric
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ Make sure `~/.composer/vendor/bin` is in your terminal's path.
 
 ```
 cd ~/Code
-package-bootstrapper php steadfastcollective/cashier-extended --tests
+fabric php steadfastcollective/vesta-php --tests
 ```
 
 **Parameters**
@@ -29,7 +29,7 @@ package-bootstrapper php steadfastcollective/cashier-extended --tests
 
 ```
 cd ~/Code
-package-bootstrapper laravel steadfastcollective/cashier-extended --tests --facade --config
+fabric laravel steadfastcollective/cashier-extended --tests --facade --config
 ```
 
 **Parameters**

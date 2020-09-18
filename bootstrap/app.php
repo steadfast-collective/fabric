@@ -37,14 +37,6 @@ $app->singleton(
 );
 
 /*
-    Package Bootstrapper Constants
-*/
-
-if (! defined('STUBS_DIRECTORY')) {
-    define('STUBS_DIRECTORY', __DIR__.'/../stubs');
-}
-
-/*
 |--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
@@ -54,5 +46,9 @@ if (! defined('STUBS_DIRECTORY')) {
 | from the actual running of the application and sending responses.
 |
 */
+
+if (! defined('STUBS_DIRECTORY')) {
+    define('STUBS_DIRECTORY', __DIR__.'/../stubs');
+}
 
 return $app;

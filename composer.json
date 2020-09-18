@@ -1,6 +1,6 @@
 {
-    "name": "damcclean/package-bootstrapper",
-    "description": "Allows developers to easilly bootstrap PHP and Laravel packages.",
+    "name": "steadfastcollective/fabric",
+    "description": "CLI Tool to easily bootstrap PHP & Laravel packages.",
     "type": "project",
     "require": {
         "php": "^7.3",

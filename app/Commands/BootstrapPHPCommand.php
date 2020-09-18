@@ -2,6 +2,8 @@
 
 namespace App\Commands;
 
+use App\Flags;
+use App\Stubs;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\SplFileInfo;
@@ -13,44 +15,35 @@ class BootstrapPHPCommand extends Command
     protected $signature = 'php {name} {--tests}';
     protected $description = 'Bootstrap a PHP package.';
 
-    protected $flags;
-    protected $vendorName;
-    protected $packageName;
-    protected $packageDirectory;
-    protected $packageNamespace;
-
     public function handle()
     {
-        $this->flags = [
-            'name'   => $this->argument('name'),
-            'params' => [
-                'tests' => $this->option('tests'),
-            ],
-        ];
+        $flags = new Flags($this->argument('name'), [
+            'tests' => $this->option('tests'),
+        ]);
 
-        $this->vendorName = explode('/', $this->flags['name'])[0];
-        $this->packageName = explode('/', $this->flags['name'])[1];
-        $this->packageDirectory = getcwd().'/'.Str::slug($this->packageName);
-        $this->packageNamespace = Str::studly($this->vendorName).'\\'.Str::studly($this->packageName);
-
-        // TODO: wizard (if no params are set)
-
-        $this->task('Copying stubs', function () {
-            File::copyDirectory(STUBS_DIRECTORY.'/php', $this->packageDirectory);
+        $this->task('Copying stubs', function () use ($flags) {
+            Stubs::copyDirectory('php', '.', $flags);
         });
 
-        if (in_array('tests', $this->flags['params']) && $this->flags['params']['tests'] === true) {
-            $this->task('Adding Tests', function () {
-                File::copyDirectory(STUBS_DIRECTORY.'/php-tests/tests', $this->packageDirectory.'/tests');
-                File::copy(STUBS_DIRECTORY.'/php-tests/phpunit.xml', $this->packageDirectory.'/phpunit.xml');
+        // Tests
+        $this->task('Tests', function () use ($flags) {
+            if (! $flags->hasParam('tests')) {
+                return;
+            }
 
-                $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
-                $composerManifest['autoload-dev']['psr-4'][Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\"] = "tests";
-                $composerManifest['require-dev']['phpunit/phpunit'] = "^9.3";
-
-                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_FORCE_OBJECT|JSON_PRETTY_PRINT));
-            });
-        }
+            Stubs::copyDirectory('php-tests/tests', 'tests', $flags);
+            Stubs::copy('php-tests/phpunit.xml', 'phpunit.xml', $flags);
+            Stubs::mergeManifest([
+                'autoload-dev' => [
+                    'psr-4' => [
+                        Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\" => "tests",
+                    ],
+                ],
+                'require-dev' => [
+                    'phpunit/phpunit' => "^9.3",
+                ],
+            ], $flags);
+        });
 
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))

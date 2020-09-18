@@ -39,4 +39,31 @@ class Flags
     {
         return in_array($paramName, $this->params);
     }
+
+    public function hasEmptyParams(): bool
+    {
+        foreach ($this->params as $key => $value) {
+            if ($value === true) return false;
+        }
+
+        return true;
+    }
+
+    public function name(string $name = '')
+    {
+        if ($name === '') {
+            return $this->name;
+        }
+
+        $this->name = $name;
+    }
+
+    public function params(array $params = [])
+    {
+        if ($params = []) {
+            return $this->params;
+        }
+
+        $this->params = array_merge($params, $this->params);
+    }
 }

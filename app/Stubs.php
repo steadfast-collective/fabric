@@ -8,6 +8,10 @@ class Stubs
 {
     public static function makeDirectory(string $directory, Flags $flags)
     {
+        if (File::exists($flags->packageDirectory().'/'.$directory)) {
+            return;
+        }
+
         File::makeDirectory($flags->packageDirectory().'/'.$directory);
     }
 
@@ -18,7 +22,7 @@ class Stubs
 
     public static function copy(string $source, string $destination, Flags $flags)
     {
-        File::copyDirectory(STUBS_DIRECTORY.'/'.$source, $flags->packageDirectory().'/'.$destination);
+        File::copy(STUBS_DIRECTORY.'/'.$source, $flags->packageDirectory().'/'.$destination);
     }
 
     public static function mergeManifest(array $manifest, Flags $flags)

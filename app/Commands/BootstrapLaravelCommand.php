@@ -95,6 +95,19 @@ class BootstrapLaravelCommand extends Command
             });
         }
 
+        if ($this->flags['params']['lang'] === true) {
+            $this->task('Adding Language Files', function () {
+                File::makeDirectory($this->packageDirectory.'/resources');
+                File::makeDirectory($this->packageDirectory.'/resources/lang');
+                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/resources/lang/.gitkeep');
+
+                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
+                $serviceProvider = str_replace('#LANG#', File::get(STUBS_DIRECTORY.'/laravel-boot-lang.php'), $serviceProvider);
+
+                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
+            });
+        }
+
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))
                 ->each(function (SplFileInfo $file) {

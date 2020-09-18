@@ -10,6 +10,7 @@ class DummyPackageServiceProvider extends ServiceProvider
     {
         #CONFIG#
         #VIEWS#
+        #LANG#
         //
     }
 

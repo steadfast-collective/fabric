@@ -27,6 +27,18 @@ class BootstrapLaravelCommand extends Command
             'migrations' => $this->option('migrations'),
         ]);
 
+        if ($flags->hasEmptyParams()) {
+            $params['tests'] = $this->confirm('Should we setup PHPUnit for you?');
+            $params['facade'] = $this->confirm('Would you like a facade?');
+            $params['config'] = $this->confirm('Would you like a configuration file?');
+            $params['views'] = $this->confirm('Would you like your views to be setup?');
+            $params['lang'] = $this->confirm('Would you like language files to be setup?');
+            $params['routes'] = $this->confirm('Would you like routes to be setup?');
+            $params['migrations'] = $this->confirm('Would you like your migrations to be setup?');
+
+            $flags->params($params);
+        }
+
         $this->task('Copying stubs', function () use ($flags) {
             Stubs::copyDirectory('laravel', '.', $flags);
         });

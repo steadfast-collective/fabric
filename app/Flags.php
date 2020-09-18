@@ -27,7 +27,7 @@ class Flags
 
     public function packageDirectory(): string
     {
-        return getcwd().'/'.Str::slug($this->packageName);
+        return getcwd().'/'.Str::slug($this->packageName());
     }
 
     public function packageNamespace(): string

@@ -21,6 +21,12 @@ class BootstrapPHPCommand extends Command
             'tests' => $this->option('tests'),
         ]);
 
+        if ($flags->hasEmptyParams()) {
+            $params['tests'] = $this->confirm('Should we setup PHPUnit for you?');
+
+            $flags->params($params);
+        }
+
         $this->task('Copying stubs', function () use ($flags) {
             Stubs::copyDirectory('php', '.', $flags);
         });

@@ -38,7 +38,7 @@ class BootstrapLaravelCommand extends Command
             }
 
             Stubs::copyDirectory('laravel-tests/tests', 'tests', $flags);
-            Stubs::copy('laravel-test/phpunit.xml', 'phpunit.xml', $flags);
+            Stubs::copy('laravel-tests/phpunit.xml', 'phpunit.xml', $flags);
             Stubs::mergeManifest([
                 'autoload-dev' => [
                     'psr-4' => [
@@ -146,7 +146,11 @@ class BootstrapLaravelCommand extends Command
                     $contents = str_replace('DummyPackageFacade', Str::studly($flags->packageName()).'Facade', $contents);
 
                     if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
-                        // TODO: remove left over temp comments, like '#MIGRATIONS#'
+                        $contents = str_replace('#CONFIG#', '', $contents);
+                        $contents = str_replace('#VIEWS#', '', $contents);
+                        $contents = str_replace('#LANG#', '', $contents);
+                        $contents = str_replace('#ROUTES#', '', $contents);
+                        $contents = str_replace('#MIGRATIONS#', '', $contents);
 
                         File::put($file->getPath().'/'.Str::studly($flags->packageName()).'ServiceProvider.php', $contents);
                         File::delete($file->getPathname());
@@ -164,7 +168,7 @@ class BootstrapLaravelCommand extends Command
                     File::put($file->getPathname(), $contents);
                 });
 
-            // TODO: Run php cs fixer to lint the service provider etc
+            // TODO: Run PHP CS Fixer (or some other linter) to fix service provider indentation
         });
 
         $this->task('Composer Install', function () use ($flags) {

@@ -2,6 +2,8 @@
 
 namespace App\Commands;
 
+use App\Flags;
+use App\Stubs;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\SplFileInfo;
@@ -13,125 +15,118 @@ class BootstrapLaravelCommand extends Command
     protected $signature = 'laravel {name} {--tests} {--facade} {--config} {--views} {--lang} {--routes} {--migrations}';
     protected $description = 'Bootstrap a Laravel package.';
 
-    protected $flags;
-    protected $vendorName;
-    protected $packageName;
-    protected $packageDirectory;
-    protected $packageNamespace;
-
     public function handle()
     {
-        $this->flags = [
-            'name'   => $this->argument('name'),
-            'params' => [
-                'tests'  => $this->option('tests'),
-                'facade' => $this->option('facade'),
-                'config' => $this->option('config'),
-                'views'  => $this->option('views'),
-                'lang'   => $this->option('lang'),
-                'routes' => $this->option('routes'),
-                'migrations' => $this->option('migrations'),
-            ],
-        ];
+        $flags = new Flags($this->argument('name'), [
+            'tests'      => $this->option('tests'),
+            'facade'     => $this->option('facade'),
+            'config'     => $this->option('config'),
+            'views'      => $this->option('views'),
+            'lang'       => $this->option('lang'),
+            'routes'     => $this->option('routes'),
+            'migrations' => $this->option('migrations'),
+        ]);
 
-        $this->vendorName = explode('/', $this->flags['name'])[0];
-        $this->packageName = explode('/', $this->flags['name'])[1];
-        $this->packageDirectory = getcwd().'/'.Str::slug($this->packageName);
-        $this->packageNamespace = Str::studly($this->vendorName).'\\'.Str::studly($this->packageName);
-
-        // TODO: wizard (if no params are set)
-
-        $this->task('Copying stubs', function () {
-            File::copyDirectory(STUBS_DIRECTORY.'/laravel', $this->packageDirectory);
+        $this->task('Copying stubs', function () use ($flags) {
+            Stubs::copyDirectory('laravel', '.', $flags);
         });
 
-        if ($this->flags['params']['tests'] === true) {
-            $this->task('Adding Tests', function () {
-                File::copyDirectory(STUBS_DIRECTORY.'/laravel-tests/tests', $this->packageDirectory.'/tests');
-                File::copy(STUBS_DIRECTORY.'/laravel-tests/phpunit.xml', $this->packageDirectory.'/phpunit.xml');
+        // Tests
+        $this->task('Tests', function () use ($flags) {
+            if (! $flags->hasParam('tests')) {
+                return;
+            }
 
-                $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
-                $composerManifest['autoload-dev']['psr-4'][Str::studly($this->vendorName)."\\".Str::studly($this->packageName)."\\Tests\\"] = "tests";
-                $composerManifest['require-dev']['orchestra/testbench'] = '^4.0|^5.0|^6.0';
-                $composerManifest['require-dev']['phpunit/phpunit'] = "^8.0|^9.0";
+            Stubs::copyDirectory('laravel-tests/tests', 'tests', $flags);
+            Stubs::copy('laravel-test/phpunit.xml', 'phpunit.xml', $flags);
+            Stubs::mergeManifest([
+                'autoload-dev' => [
+                    'psr-4' => [
+                        Str::studly($flags->vendorName())."\\".Str::studly($flags->packageName())."\\Tests\\" => "tests",
+                    ],
+                ],
+                'require-dev' => [
+                    'orchestra/testbench' => '^4.0|^5.0|^6.0',
+                    'phpunit/phpunit' => '^8.0|^9.0',
+                ],
+            ], $flags);
+        });
 
-                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_PRETTY_PRINT));
-            });
-        }
+        // Facade
+        $this->task('Facade', function () use ($flags) {
+        if (! $this->hasParam('facade')) {
+                return;
+            }
 
-        if ($this->flags['params']['facade'] === true) {
-            $this->task('Adding Facade', function () {
-                File::copy(STUBS_DIRECTORY.'/DummyPackageFacade.php', $this->packageDirectory.'/src/DummyPackageFacade.php');
+            Stubs::copy('DummyPackageFacade.php', 'src/DummyPackageFacade.php', $flags);
+            Stubs::mergeManifest([
+                'extra' => [
+                    'laravel' => [
+                        'aliases' => [
+                            Str::studly($flags->packageName()) => 'DummyVendor\\DummyPackage\\DummyPackageFacade',
+                        ],
+                    ],
+                ],
+            ], $flags);
+        });
 
-                $composerManifest = json_decode(File::get($this->packageDirectory.'/composer.json'), true);
-                $composerManifest['extra']['laravel']['aliases'][Str::studly($this->packageName)] = 'DummyVendor\\DummyPackage\\DummyPackageFacade';
+        // Config
+        $this->task('Config', function () use ($flags) {
+            if (! $flags->hasParam('config')) {
+                return;
+            }
 
-                File::put($this->packageDirectory.'/composer.json', json_encode($composerManifest, JSON_PRETTY_PRINT));
-            });
-        }
+            Stubs::makeDirectory('config', $flags);
+            Stubs::copy('laravel-config-dummy.php', 'config/dummy-package.php', $flags);
+            Stubs::fillServiceProviderStub('CONFIG', 'laravel-boot-config.php', $flags);
+        });
 
-        if ($this->flags['params']['config'] === true) {
-            $this->task('Adding Config', function () {
-                File::makeDirectory($this->packageDirectory.'/config');
-                File::copy(STUBS_DIRECTORY.'/laravel-config-dummy.php', $this->packageDirectory.'/config/dummy-package.php');
+        // Views
+        $this->task('Views', function () use ($flags) {
+            if (! $flags->hasParam('views')) {
+                return;
+            }
 
-                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
-                $serviceProvider = str_replace('#CONFIG#', File::get(STUBS_DIRECTORY.'/laravel-boot-config.php'), $serviceProvider);
+            Stubs::makeDirectory('resources', $flags);
+            Stubs::makeDirectory('resources/views', $flags);
+            Stubs::copy('.gitkeep', 'resources/views/.gitkeep', $flags);
+            Stubs::fillServiceProviderStub('VIEWS', 'laravel-boot-views.php', $flags);
+        });
 
-                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
-            });
-        }
+        // Language Files
+        $this->task('Language Files', function () use ($flags) {
+            if (! $flags->hasParam('lang')) {
+                return;
+            }
 
-        if ($this->flags['params']['views'] === true) {
-            $this->task('Adding Views', function () {
-                File::makeDirectory($this->packageDirectory.'/resources');
-                File::makeDirectory($this->packageDirectory.'/resources/views');
-                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/resources/views/.gitkeep');
+            Stubs::makeDirectory('resources', $flags);
+            Stubs::makeDirectory('resources/lang', $flags);
+            Stubs::copy('.gitkeep', 'resources/lang/.gitkeep', $flags);
+            Stubs::fillServiceProviderStub('LANG', 'laravel-boot-lang.php', $flags);
+        });
 
-                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
-                $serviceProvider = str_replace('#VIEWS#', File::get(STUBS_DIRECTORY.'/laravel-boot-views.php'), $serviceProvider);
+        // Routes
+        $this->task('Routes', function () use ($flags) {
+            if (! $flags->hasParam('routes')) {
+                return;
+            }
 
-                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
-            });
-        }
+            Stubs::makeDirectory('routes', $flags);
+            Stubs::copy('laravel-routes-web.php', 'routes/web.php', $flags);
+            Stubs::fillServiceProviderStub('ROUTES', 'laravel-boot-routes.php', $flags);
+        });
 
-        if ($this->flags['params']['lang'] === true) {
-            $this->task('Adding Language Files', function () {
-                File::makeDirectory($this->packageDirectory.'/resources');
-                File::makeDirectory($this->packageDirectory.'/resources/lang');
-                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/resources/lang/.gitkeep');
+        // Migrations
+        $this->task('Migrations', function () use ($flags) {
+            if (! $flags->hasParam('migrations')) {
+                return;
+            }
 
-                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
-                $serviceProvider = str_replace('#LANG#', File::get(STUBS_DIRECTORY.'/laravel-boot-lang.php'), $serviceProvider);
-
-                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
-            });
-        }
-
-        if ($this->flags['params']['routes'] === true) {
-            $this->task('Adding Routes', function () {
-                File::makeDirectory($this->packageDirectory.'/routes');
-                File::copy(STUBS_DIRECTORY.'/laravel-routes-web.php', $this->packageDirectory.'/routes/web.php');
-
-                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
-                $serviceProvider = str_replace('#ROUTES#', File::get(STUBS_DIRECTORY.'/laravel-boot-routes.php'), $serviceProvider);
-
-                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
-            });
-        }
-
-        if ($this->flags['params']['migrations'] === true) {
-            $this->task('Adding Migrations', function () {
-                File::makeDirectory($this->packageDirectory.'/database');
-                File::makeDirectory($this->packageDirectory.'/database/migrations');
-                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/database/migrations/.gitkeep');
-
-                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
-                $serviceProvider = str_replace('#MIGRATIONS#', File::get(STUBS_DIRECTORY.'/laravel-boot-migrations.php'), $serviceProvider);
-
-                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
-            });
-        }
+            Stubs::makeDirectory('database', $flags);
+            Stubs::makeDirectory('database/migrations', $flags);
+            Stubs::copy('.gitkeep', 'database/migrations/.gitkeep', $flags);
+            Stubs::fillServiceProviderStub('MIGRATIONS', 'laravel-boot-migrations.php', $flags);
+        });
 
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))

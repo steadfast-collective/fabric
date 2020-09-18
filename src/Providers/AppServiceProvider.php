@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace SteadfastCollective\Fabric\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

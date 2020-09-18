@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace SteadfastCollective\Fabric\Tests\Commands;
 
-use Tests\TestCase;
+use SteadfastCollective\Fabric\Tests\TestCase;
 
-class BootstrapPHPCommandTest extends TestCase
+class PHPCommandTest extends TestCase
 {
     public function setUp(): void
     {

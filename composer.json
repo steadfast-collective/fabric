@@ -14,12 +14,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "SteadfastCollective\\Fabric\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "SteadfastCollective\\Fabric\\Tests\\": "tests/"
         }
     },
     "config": {

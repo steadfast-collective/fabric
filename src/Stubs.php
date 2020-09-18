@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace SteadfastCollective\Fabric;
 
 use Illuminate\Support\Facades\File;
 

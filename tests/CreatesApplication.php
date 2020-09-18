@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace SteadfastCollective\Fabric\Tests;
 
 use Illuminate\Contracts\Console\Kernel;
 

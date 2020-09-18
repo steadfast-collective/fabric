@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Commands;
+namespace SteadfastCollective\Fabric\Commands;
 
-use App\Flags;
-use App\Stubs;
+use SteadfastCollective\Fabric\Flags;
+use SteadfastCollective\Fabric\Stubs;
 use Illuminate\Support\Facades\File;
-use LaravelZero\Framework\Commands\Command;
-use Symfony\Component\Finder\SplFileInfo;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Finder\SplFileInfo;
 
 class PHPCommand extends Command
 {

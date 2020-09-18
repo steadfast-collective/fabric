@@ -54,7 +54,7 @@ return [
     */
 
     'providers' => [
-        App\Providers\AppServiceProvider::class,
+        SteadfastCollective\Fabric\Providers\AppServiceProvider::class,
     ],
 
 ];

@@ -120,6 +120,19 @@ class BootstrapLaravelCommand extends Command
             });
         }
 
+        if ($this->flags['params']['migrations'] === true) {
+            $this->task('Adding Migrations', function () {
+                File::makeDirectory($this->packageDirectory.'/database');
+                File::makeDirectory($this->packageDirectory.'/database/migrations');
+                File::copy(STUBS_DIRECTORY.'/.gitkeep', $this->packageDirectory.'/database/migrations/.gitkeep');
+
+                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
+                $serviceProvider = str_replace('#MIGRATIONS#', File::get(STUBS_DIRECTORY.'/laravel-boot-migrations.php'), $serviceProvider);
+
+                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
+            });
+        }
+
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))
                 ->each(function (SplFileInfo $file) {

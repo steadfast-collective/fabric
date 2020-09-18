@@ -108,6 +108,18 @@ class BootstrapLaravelCommand extends Command
             });
         }
 
+        if ($this->flags['params']['routes'] === true) {
+            $this->task('Adding Routes', function () {
+                File::makeDirectory($this->packageDirectory.'/routes');
+                File::copy(STUBS_DIRECTORY.'/laravel-routes-web.php', $this->packageDirectory.'/routes/web.php');
+
+                $serviceProvider = File::get($this->packageDirectory.'/src/DummyPackageServiceProvider.php');
+                $serviceProvider = str_replace('#ROUTES#', File::get(STUBS_DIRECTORY.'/laravel-boot-routes.php'), $serviceProvider);
+
+                File::put($this->packageDirectory.'/src/DummyPackageServiceProvider.php', $serviceProvider);
+            });
+        }
+
         $this->task('Swapping namespaces, classes, etc', function () {
             collect(File::allFiles($this->packageDirectory))
                 ->each(function (SplFileInfo $file) {

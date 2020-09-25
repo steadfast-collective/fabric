@@ -34,7 +34,7 @@
         "test": [
             "./vendor/bin/phpunit"
         ],
-        "build": [
+        "release": [
             "./release.sh"
         ]
     },

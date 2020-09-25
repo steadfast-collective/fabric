@@ -33,9 +33,13 @@
         ],
         "test": [
             "./vendor/bin/phpunit"
+        ],
+        "build": [
+            "./release.sh"
         ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "bin": ["fabric"]
+    "bin": ["builds/fabric"],
+    "exclude-dev-files": false
 }

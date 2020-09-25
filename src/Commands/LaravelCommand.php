@@ -44,8 +44,8 @@ class LaravelCommand extends Command
 
         // Tests
         $this->task('Tests', function () use ($flags) {
-            if (! $flags->hasParam('tests')) {
-                return;
+            if (! $flags->getParam('tests')) {
+                return false;
             }
 
             Stubs::copyDirectory('laravel-tests/tests', 'tests', $flags);
@@ -65,8 +65,8 @@ class LaravelCommand extends Command
 
         // Facade
         $this->task('Facade', function () use ($flags) {
-        if (! $flags->hasParam('facade')) {
-                return;
+        if (! $flags->getParam('facade')) {
+                return false;
             }
 
             Stubs::copy('DummyPackageFacade.php', 'src/DummyPackageFacade.php', $flags);
@@ -83,8 +83,8 @@ class LaravelCommand extends Command
 
         // Config
         $this->task('Config', function () use ($flags) {
-            if (! $flags->hasParam('config')) {
-                return;
+            if (! $flags->getParam('config')) {
+                return false;
             }
 
             Stubs::makeDirectory('config', $flags);
@@ -94,8 +94,8 @@ class LaravelCommand extends Command
 
         // Views
         $this->task('Views', function () use ($flags) {
-            if (! $flags->hasParam('views')) {
-                return;
+            if (! $flags->getParam('views')) {
+                return false;
             }
 
             Stubs::makeDirectory('resources', $flags);
@@ -106,8 +106,8 @@ class LaravelCommand extends Command
 
         // Language Files
         $this->task('Language Files', function () use ($flags) {
-            if (! $flags->hasParam('lang')) {
-                return;
+            if (! $flags->getParam('lang')) {
+                return false;
             }
 
             Stubs::makeDirectory('resources', $flags);
@@ -118,8 +118,8 @@ class LaravelCommand extends Command
 
         // Routes
         $this->task('Routes', function () use ($flags) {
-            if (! $flags->hasParam('routes')) {
-                return;
+            if (! $flags->getParam('routes')) {
+                return false;
             }
 
             Stubs::makeDirectory('routes', $flags);
@@ -129,8 +129,8 @@ class LaravelCommand extends Command
 
         // Migrations
         $this->task('Migrations', function () use ($flags) {
-            if (! $flags->hasParam('migrations')) {
-                return;
+            if (! $flags->getParam('migrations')) {
+                return false;
             }
 
             Stubs::makeDirectory('database', $flags);
@@ -178,8 +178,6 @@ class LaravelCommand extends Command
 
                     File::put($file->getPathname(), $contents);
                 });
-
-            // TODO: Run PHP CS Fixer (or some other linter) to fix service provider indentation
         });
 
         $this->task('Composer Install', function () use ($flags) {

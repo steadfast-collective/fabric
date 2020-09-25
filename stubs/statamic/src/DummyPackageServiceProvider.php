@@ -14,6 +14,7 @@ class DummyPackageServiceProvider extends ServiceProvider
         #VIEWS#
         #LANG#
         #ROUTES#
+        #ACTION#
         //
     }
 

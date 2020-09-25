@@ -1,0 +1,24 @@
+{
+    "name": "damcclean/duplicator",
+    "description": "dummy-description",
+    "require": {
+        "php": "^7.3",
+        "statamic/cms": "3.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Damcclean\\Duplicator\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Damcclean\\Duplicator\\DuplicatorServiceProvider"
+            ]
+        },
+        "statamic": {
+            "name": "Duplicator",
+            "description": "dummy-description"
+        }
+    }
+}

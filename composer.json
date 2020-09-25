@@ -33,9 +33,6 @@
         ],
         "test": [
             "./vendor/bin/phpunit"
-        ],
-        "release": [
-            "./release.sh"
         ]
     },
     "minimum-stability": "dev",

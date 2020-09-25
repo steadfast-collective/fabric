@@ -1,5 +1,8 @@
 <?php
 
+use SteadfastCollective\Fabric\Commands\LaravelCommand;
+use SteadfastCollective\Fabric\Commands\PHPCommand;
+
 return [
 
     /*
@@ -40,7 +43,8 @@ return [
     */
 
     'add' => [
-        // ..
+        LaravelCommand::class,
+        PHPCommand::class,
     ],
 
     /*

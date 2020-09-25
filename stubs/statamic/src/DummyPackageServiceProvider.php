@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class DummyPackageServiceProvider extends ServiceProvider
 {
+    #MODIFIER#
+
     public function boot()
     {
         #CONFIG#

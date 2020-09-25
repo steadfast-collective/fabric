@@ -11,7 +11,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class StatamicCommand extends Command
 {
-    protected $signature = 'statamic {name} {--tests} {--config} {--views} {--lang} {--routes}';
+    protected $signature = 'statamic {name} {--tests} {--config} {--views} {--lang} {--routes} {--modifier}';
     protected $description = 'Bootstrap a Statamic addon.';
 
     public function handle()
@@ -22,6 +22,7 @@ class StatamicCommand extends Command
             'views'      => $this->option('views'),
             'lang'       => $this->option('lang'),
             'routes'     => $this->option('routes'),
+            'modifier'   => $this->option('modifier'),
         ]);
 
         if ($flags->hasEmptyParams()) {
@@ -30,6 +31,7 @@ class StatamicCommand extends Command
             $params['views'] = $this->confirm('Would you like your views to be setup?');
             $params['lang'] = $this->confirm('Would you like language files to be setup?');
             $params['routes'] = $this->confirm('Would you like routes to be setup?');
+            $params['modifier'] = $this->confirm('Would you like a modifier?');
 
             $flags->params($params);
         }
@@ -105,6 +107,17 @@ class StatamicCommand extends Command
             Stubs::fillServiceProviderStub('ROUTES', 'laravel-boot-routes.php', $flags);
         });
 
+        // Modifier
+        $this->task('Modifier', function () use ($flags) {
+            if (! $flags->getParam('modifier')) {
+                return false;
+            }
+
+            Stubs::makeDirectory('src/modifiers', $flags);
+            Stubs::copy('statamic-modifier.php', 'src/modifiers/DummyModifier.php', $flags);
+            Stubs::fillServiceProviderStub('MODIFIER', 'statamic-provider-modifier.php', $flags);
+        });
+
         $this->task('Swapping namespaces, classes, etc', function () use ($flags) {
             collect(File::allFiles($flags->packageDirectory()))
                 ->each(function (SplFileInfo $file) use ($flags) {
@@ -120,14 +133,23 @@ class StatamicCommand extends Command
 
                     // Classes
                     $contents = str_replace('DummyPackageServiceProvider', Str::studly($flags->packageName()).'ServiceProvider', $contents);
+                    $contents = str_replace('DummyModifier', Str::studly($flags->packageName()).'Modifier', $contents);
 
                     if ($file->getFilename() === 'DummyPackageServiceProvider.php') {
                         $contents = str_replace('#CONFIG#', '', $contents);
                         $contents = str_replace('#VIEWS#', '', $contents);
                         $contents = str_replace('#LANG#', '', $contents);
                         $contents = str_replace('#ROUTES#', '', $contents);
+                        $contents = str_replace('#MODIFIER#', '', $contents);
 
                         File::put($file->getPath().'/'.Str::studly($flags->packageName()).'ServiceProvider.php', $contents);
+                        File::delete($file->getPathname());
+
+                        return;
+                    }
+
+                    if ($file->getFilename() === 'DummyModifier.php') {
+                        File::put($file->getPath().'/'.Str::studly($flags->packageName()).'Modifier.php', $contents);
                         File::delete($file->getPathname());
 
                         return;

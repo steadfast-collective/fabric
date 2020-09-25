@@ -2,6 +2,7 @@
 
 use SteadfastCollective\Fabric\Commands\LaravelCommand;
 use SteadfastCollective\Fabric\Commands\PHPCommand;
+use SteadfastCollective\Fabric\Commands\StatamicCommand;
 
 return [
 
@@ -45,6 +46,7 @@ return [
     'add' => [
         LaravelCommand::class,
         PHPCommand::class,
+        StatamicCommand::class,
     ],
 
     /*

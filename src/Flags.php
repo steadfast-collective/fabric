@@ -35,6 +35,11 @@ class Flags
         return Str::studly($this->vendorName().'\\'.Str::studly($this->packageDirectory()));
     }
 
+    public function getParam(string $paramName)
+    {
+        return $this->params[$paramName];
+    }
+
     public function hasParam(string $paramName)
     {
         return in_array($paramName, $this->params);

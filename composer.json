@@ -27,6 +27,14 @@
         "sort-packages": true,
         "optimize-autoloader": true
     },
+    "scripts": {
+        "lint": [
+            "php-cs-fixer fix ./src"
+        ],
+        "test": [
+            "./vendor/bin/phpunit"
+        ]
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": ["fabric"]

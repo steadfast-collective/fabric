@@ -66,3 +66,13 @@ fabric laravel steadfastcollective/twitter-sharing-tool --tests --config --actio
 | --routes     | Creates an empty routes file and hooks it up in your service provider.          |
 | --modifier   | Creates a modifier class and hooks it up in your service provider.              |
 | --action     | Creates an action class and hooks it up in your service provider.               |
+
+## Development
+
+If you're wanting to work on Fabric (the tool) locally, there's a few steps to getting it setup:
+
+1. Clone this repository: `git clone git@github.com:steadfast-collective/fabric.git`
+2. Change directory into `fabric`
+3. Install Composer dependencies `composer install`
+
+After the above steps, you'll be able to run Fabric commands with `php fabric`. This will also allow you to run two versions of Fabric, the production one which is globally installed with Composer and the development version, cloned to your machine.

@@ -44,8 +44,8 @@ class StatamicCommand extends Command
                 return false;
             }
 
-            Stubs::copyDirectory('laravel-tests/tests', 'tests', $flags);
-            Stubs::copy('laravel-tests/phpunit.xml', 'phpunit.xml', $flags);
+            Stubs::copyDirectory('statamic-tests/tests', 'tests', $flags);
+            Stubs::copy('statamic-tests/phpunit.xml', 'phpunit.xml', $flags);
             Stubs::mergeManifest([
                 'autoload-dev' => [
                     'psr-4' => [

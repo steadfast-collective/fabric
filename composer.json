@@ -2,14 +2,13 @@
     "name": "steadfastcollective/fabric",
     "description": "CLI Tool to easily bootstrap PHP & Laravel packages.",
     "require": {
-        "php": "^7.3",
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "laravel-zero/framework": "^8.0",
-        "nunomaduro/laravel-console-task": "^1.5"
+        "php": "^7.3"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "laravel-zero/framework": "^8.0",
+        "nunomaduro/laravel-console-task": "^1.5"
     },
     "autoload": {
         "psr-4": {

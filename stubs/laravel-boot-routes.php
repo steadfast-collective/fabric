@@ -1,4 +1,4 @@
-Route::group([
+\Illuminate\Support\Facades\Route::group([
     'prefix' => 'dummy-package',
     'namespace' => 'DummyVendor\DummyPackage\Http\Controllers',
     'as' => 'dummy-package.',

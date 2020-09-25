@@ -1,5 +1,4 @@
-echo "Release Name:"
-read releaseName
+read -p 'Release: ' releaseName
 
 rm -rf builds/fabric
 php fabric app:build fabric --build-version=$releaseName

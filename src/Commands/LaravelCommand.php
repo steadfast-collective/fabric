@@ -186,15 +186,5 @@ class LaravelCommand extends Command
             $process = new Process(['composer install'], $flags->packageDirectory());
             $process->run();
         });
-
-        $this->task('PHP CS Fixer', function () use ($flags) {
-            $this->line('');
-
-            $process = new Process(['curl', '-L', 'https://cs.symfony.com/download/php-cs-fixer-v2.phar', '-o', 'php-cs-fixer'], $flags->packageDirectory());
-            $process->run();
-
-            $process = new Process(['php', 'php-cs-fixer.phar', 'fix', './src']);
-            $process->run();
-        });
     }
 }

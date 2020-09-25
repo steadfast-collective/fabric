@@ -65,7 +65,7 @@ class LaravelCommand extends Command
 
         // Facade
         $this->task('Facade', function () use ($flags) {
-        if (! $flags->getParam('facade')) {
+            if (! $flags->getParam('facade')) {
                 return false;
             }
 

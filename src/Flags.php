@@ -48,7 +48,9 @@ class Flags
     public function hasEmptyParams(): bool
     {
         foreach ($this->params as $key => $value) {
-            if ($value === true) return false;
+            if ($value === true) {
+                return false;
+            }
         }
 
         return true;

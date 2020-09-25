@@ -1,8 +1,10 @@
 # Fabric
 
-Fabric is a command-line utility to quickly scaffold PHP and Laravel packages.
+Fabric is a command-line utility to quickly scaffold PHP and Laravel packages. This tool is still in early stages, any bugs can be reported as [Github Issues](https://github.com/steadfast-collective/fabric/issues).
 
 ## Installation
+
+It's recommended to install Fabric globally on your machine so you can run `fabric` commands where-ever you are in your terminal.
 
 ```
 composer global require steadfastcollective/fabric

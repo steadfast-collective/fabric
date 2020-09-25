@@ -37,6 +37,5 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "bin": ["builds/fabric"],
-    "exclude-dev-files": false
+    "bin": ["builds/fabric"]
 }

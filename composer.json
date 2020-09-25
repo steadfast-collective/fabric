@@ -1,7 +1,6 @@
 {
     "name": "steadfastcollective/fabric",
     "description": "CLI Tool to easily bootstrap PHP & Laravel packages.",
-    "type": "project",
     "require": {
         "php": "^7.3",
         "friendsofphp/php-cs-fixer": "^2.16",

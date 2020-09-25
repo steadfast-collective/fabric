@@ -10,9 +10,15 @@ It's recommended to install Fabric globally on your machine so you can run `fabr
 composer global require steadfastcollective/fabric
 ```
 
+You'll also want to ensure that `~/.composer/vendor/bin` is in your terminal's path.
+
 ## Usage
 
-Make sure `~/.composer/vendor/bin` is in your terminal's path.
+Fabric provides seperate commands for each type of package that can be bootstrapped. One for `php`, one for `laravel` and one for `statamic`. You can specify when you run the command, like so: `fabric php`
+
+When running a Fabric command, you'll also need to tell it the [name of the Composer package](https://getcomposer.org/doc/04-schema.md#name) you want to bootstrap. For example: `fabric php steadfastcollective/package-name`, where `steadfastcollective` is the Packagist vendor and `package-name` is the name of your package.
+
+You can optionally provide a set of parameters which will be used to tell Fabric about any specific things you'd like to be bootstrapped, like Tests or a Facade. The list of parameters is documented for each package type. If you don't provide any parameters, you'll be presented with a yes/no wizard instead.
 
 ### PHP
 

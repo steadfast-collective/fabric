@@ -52,7 +52,7 @@ class Stubs
     public static function fillServiceProviderStub(string $name, string $stubSource, Flags $flags)
     {
         $serviceProvider = File::get($flags->packageDirectory().'/src/DummyPackageServiceProvider.php');
-        $serviceProvider = str_replace("#{$name}#", File::get('phar://stubs/'.$stubSource), $serviceProvider);
+        $serviceProvider = str_replace("#{$name}#", File::get($flags->clonedStubsPath().'/'.$stubSource), $serviceProvider);
 
         File::put($flags->packageDirectory().'/src/DummyPackageServiceProvider.php', $serviceProvider);
     }

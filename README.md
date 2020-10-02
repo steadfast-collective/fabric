@@ -58,7 +58,7 @@ fabric laravel steadfastcollective/cashier-extended --tests --facade --config
 
 ```
 cd ~/Code
-fabric laravel steadfastcollective/twitter-sharing-tool --tests --config --action
+fabric statamic steadfastcollective/twitter-sharing-tool --tests --config --action
 ```
 
 **Parameters**

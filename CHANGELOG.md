@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v1.0.4
+
+* Another path bugfix
+
 ## v1.0.3
 
 * Fixed issue with getting stubs, they'll now be cloned down during the generation process.

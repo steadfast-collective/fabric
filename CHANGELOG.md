@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v1.0.3
+
+* Fixed issue with getting stubs, they'll now be cloned down during the generation process.
+
 ## v1.0.2
 
 * Fixed issue where dependencies wouldn't be built into binary 🤦‍♂️

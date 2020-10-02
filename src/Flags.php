@@ -8,11 +8,14 @@ class Flags
 {
     protected $name;
     protected $params;
+    protected $clonedPath;
 
     public function __construct(string $name, array $params)
     {
         $this->name = $name;
         $this->params = $params;
+
+        $this->clonedPath = $_SERVER['HOME'].'/.fabric_temp';
     }
 
     public function vendorName(): string
@@ -33,6 +36,16 @@ class Flags
     public function packageNamespace(): string
     {
         return Str::studly($this->vendorName().'\\'.Str::studly($this->packageDirectory()));
+    }
+
+    public function clonedPath()
+    {
+        return $this->clonedPath;
+    }
+
+    public function clonedStubsPath()
+    {
+        return $this->clonedPath.'/stubs';
     }
 
     public function getParam(string $paramName)

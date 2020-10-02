@@ -39,6 +39,7 @@ class StatamicCommand extends Command
         }
 
         $this->task('Copying stubs', function () use ($flags) {
+            Stubs::downloadStubs($flags);
             Stubs::copyDirectory('statamic', '.', $flags);
         });
 
@@ -185,6 +186,10 @@ class StatamicCommand extends Command
 
             $process = new Process(['composer install'], $flags->packageDirectory());
             $process->run();
+        });
+
+        $this->task('Cleaning up', function () use ($flags) {
+            Stubs::deleteStubs($flags);
         });
     }
 }

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v1.0.5
+
+* Fixed issue where config file was not being renamed from stubs.
+
 ## v1.0.4
 
 * Another path bugfix

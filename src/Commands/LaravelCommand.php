@@ -177,6 +177,13 @@ class LaravelCommand extends Command
                         return;
                     }
 
+                    if ($file->getFilename() === 'dummy-package.php') {
+                        File::put($file->getPath().'/'.$flags->packageName().'.php', $contents);
+                        File::delete($file->getPathname());
+
+                        return;
+                    }
+
                     File::put($file->getPathname(), $contents);
                 });
         });

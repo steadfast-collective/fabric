@@ -15,7 +15,11 @@ class Flags
         $this->name = $name;
         $this->params = $params;
 
-        $this->clonedPath = $_SERVER['HOME'].'/.fabric_temp';
+        if (config('app.env') === 'testing') {
+            $this->clonedPath = __DIR__.'/..';
+        } else {
+            $this->clonedPath = $_SERVER['HOME'].'/.fabric_temp';
+        }
     }
 
     public function vendorName(): string

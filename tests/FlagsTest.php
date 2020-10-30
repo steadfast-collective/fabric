@@ -44,13 +44,13 @@ class FlagsTest extends TestCase
     /** @test */
     public function can_get_cloned_path()
     {
-        $this->assertSame($_SERVER['HOME'].'/.fabric_temp', $this->flags->clonedPath());
+        $this->assertStringContainsString('/', realpath($this->flags->clonedStubsPath()));
     }
 
     /** @test */
     public function can_get_cloned_stubs_path()
     {
-        $this->assertSame($_SERVER['HOME'].'/.fabric_temp/stubs', $this->flags->clonedStubsPath());
+        $this->assertStringContainsString('/stubs', realpath($this->flags->clonedStubsPath()));
     }
 
     /** @test */

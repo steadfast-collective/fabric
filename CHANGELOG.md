@@ -6,6 +6,7 @@
 
 * Fixed the optional wizard, where chosen options were being forgotten about.
 * Fixed bug where the package namespace would be generated wrong
+* Possibly also fixed a bunch of other bugs 🐛
 
 ## v1.0.5 (2020-10-05)
 

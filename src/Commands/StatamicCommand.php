@@ -27,15 +27,13 @@ class StatamicCommand extends Command
         ]);
 
         if ($flags->hasEmptyParams()) {
-            $params['tests'] = $this->confirm('Should we setup PHPUnit for you?');
-            $params['config'] = $this->confirm('Would you like a configuration file?');
-            $params['views'] = $this->confirm('Would you like your views to be setup?');
-            $params['lang'] = $this->confirm('Would you like language files to be setup?');
-            $params['routes'] = $this->confirm('Would you like routes to be setup?');
-            $params['modifier'] = $this->confirm('Would you like a modifier?');
-            $params['action'] = $this->confirm('Would you like an action?');
-
-            $flags->params($params);
+            $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
+            $flags->setParam('config', $this->confirm('Would you like a configuration file?'));
+            $flags->setParam('views', $this->confirm('Would you like your views to be setup?'));
+            $flags->setParam('lang', $this->confirm('Would you like language files to be setup?'));
+            $flags->setParam('routes', $this->confirm('Would you like routes to be setup?'));
+            $flags->setParam('modifier', $this->confirm('Would you like a modifier?'));
+            $flags->setParam('action', $this->confirm('Would you like an action?'));
         }
 
         $this->task('Copying stubs', function () use ($flags) {

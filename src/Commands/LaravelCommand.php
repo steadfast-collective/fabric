@@ -27,15 +27,13 @@ class LaravelCommand extends Command
         ]);
 
         if ($flags->hasEmptyParams()) {
-            $params['tests'] = $this->confirm('Should we setup PHPUnit for you?');
-            $params['facade'] = $this->confirm('Would you like a facade?');
-            $params['config'] = $this->confirm('Would you like a configuration file?');
-            $params['views'] = $this->confirm('Would you like your views to be setup?');
-            $params['lang'] = $this->confirm('Would you like language files to be setup?');
-            $params['routes'] = $this->confirm('Would you like routes to be setup?');
-            $params['migrations'] = $this->confirm('Would you like your migrations to be setup?');
-
-            $flags->params($params);
+            $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
+            $flags->setParam('facade', $this->confirm('Would you like a facade?'));
+            $flags->setParam('config', $this->confirm('Would you like a configuration file?'));
+            $flags->setParam('views', $this->confirm('Would you like your views to be setup?'));
+            $flags->setParam('lang', $this->confirm('Would you like language files to be setup?'));
+            $flags->setParam('routes', $this->confirm('Would you like routes to be setup?'));
+            $flags->setParam('migrations', $this->confirm('Would you like your migrations to be setup?'));
         }
 
         $this->task('Copying stubs', function () use ($flags) {

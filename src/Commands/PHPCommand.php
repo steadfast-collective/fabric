@@ -21,9 +21,7 @@ class PHPCommand extends Command
         ]);
 
         if ($flags->hasEmptyParams()) {
-            $params['tests'] = $this->confirm('Should we setup PHPUnit for you?');
-
-            $flags->params($params);
+            $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
         }
 
         $this->task('Copying stubs', function () use ($flags) {

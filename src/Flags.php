@@ -53,6 +53,13 @@ class Flags
         return $this->params[$paramName];
     }
 
+    public function setParam(string $param, $value): self
+    {
+        $this->params[$param] = $value;
+
+        return $this;
+    }
+
     public function hasParam(string $paramName)
     {
         return in_array($paramName, $this->params);

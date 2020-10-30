@@ -5,6 +5,7 @@
 ## v1.0.6
 
 * Fixed the optional wizard, where chosen options were being forgotten about.
+* Fixed bug where the package namespace would be generated wrong
 
 ## v1.0.5
 

@@ -35,7 +35,7 @@ class Flags
 
     public function packageNamespace(): string
     {
-        return Str::studly($this->vendorName().'\\'.Str::studly($this->packageDirectory()));
+        return Str::studly($this->vendorName().'\\'.Str::studly($this->packageName()));
     }
 
     public function clonedPath()
@@ -50,19 +50,21 @@ class Flags
 
     public function getParam(string $paramName)
     {
+        if (! $this->hasParam($paramName)) return null;
+
         return $this->params[$paramName];
     }
 
-    public function setParam(string $param, $value): self
+    public function setParam(string $paramName, $value): self
     {
-        $this->params[$param] = $value;
+        $this->params[$paramName] = $value;
 
         return $this;
     }
 
     public function hasParam(string $paramName)
     {
-        return in_array($paramName, $this->params);
+        return isset($this->params[$paramName]);
     }
 
     public function hasEmptyParams(): bool
@@ -87,7 +89,7 @@ class Flags
 
     public function params(array $params = [])
     {
-        if ($params = []) {
+        if ($params === []) {
             return $this->params;
         }
 

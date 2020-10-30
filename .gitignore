@@ -5,3 +5,6 @@
 .phpunit.result.cache
 .DS_Store
 .php_cs.cache
+
+# Test projects
+slackbot

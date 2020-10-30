@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v1.0.6
+
+* Fixed the optional wizard, where chosen options were being forgotten about.
+
 ## v1.0.5
 
 * Fixed issue where config file was not being renamed from stubs.

@@ -6,7 +6,7 @@ use SteadfastCollective\Fabric\Flags;
 
 class FlagsTest extends TestCase
 {
-    protected Flags $flags;
+    protected $flags;
 
     public function setUp(): void
     {

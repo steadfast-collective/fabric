@@ -9,8 +9,8 @@ use SteadfastCollective\Fabric\Stubs;
 
 class StubsTest extends TestCase
 {
-    protected Flags $flags;
-    protected Stubs $stubs;
+    protected $flags;
+    protected $stubs;
 
     public function setUp(): void
     {

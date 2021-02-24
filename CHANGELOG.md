@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* Added support for PHP 8
+* Fixed some type hinting issues for PHP 7.3 users
+
 ## v1.0.6 (2020-10-30)
 
 * Fixed the optional wizard, where chosen options were being forgotten about.

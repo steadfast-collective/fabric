@@ -2,7 +2,7 @@
     "name": "steadfastcollective/fabric",
     "description": "CLI Tool to easily bootstrap PHP & Laravel packages.",
     "require": {
-        "php": "^7.3"
+        "php": "^7.3 || ^8.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",

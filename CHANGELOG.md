@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v1.0.7 (2021-06-01)
+
 * Added support for PHP 8
 * Fixed some type hinting issues for PHP 7.3 users
 

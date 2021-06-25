@@ -16,6 +16,10 @@ class PHPCommand extends Command
 
     public function handle()
     {
+        if (! str_contains($this->argument('name'), '/')) {
+            return $this->error("Invalid package name [{$this->argument('name')}]. Please correct it and try again. (eg. steadfastcollective/fabric)");
+        }
+
         $flags = new Flags($this->argument('name'), [
             'tests' => $this->option('tests'),
         ]);

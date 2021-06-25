@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v1.0.8 (2021-06-25)
+
+* Indentation has finally been fixed #1
+* An error will now be thrown if an invalid package name is given #7
+
 ## v1.0.7 (2021-06-01)
 
 * Added support for PHP 8

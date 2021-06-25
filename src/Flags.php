@@ -54,7 +54,9 @@ class Flags
 
     public function getParam(string $paramName)
     {
-        if (! $this->hasParam($paramName)) return null;
+        if (! $this->hasParam($paramName)) {
+            return null;
+        }
 
         return $this->params[$paramName];
     }

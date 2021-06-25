@@ -6,6 +6,7 @@
 
 * Indentation has finally been fixed #1
 * An error will now be thrown if an invalid package name is given #7
+* If a directory already exists for the intended destination, throw an error.
 
 ## v1.0.7 (2021-06-01)
 

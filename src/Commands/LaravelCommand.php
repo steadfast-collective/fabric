@@ -30,6 +30,10 @@ class LaravelCommand extends Command
             'migrations' => $this->option('migrations'),
         ]);
 
+        if (file_exists($flags->packageDirectory())) {
+            return $this->error("Destination package directory [{$flags->packageDirectory()}] already exists.");
+        }
+
         if ($flags->hasEmptyParams()) {
             $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
             $flags->setParam('facade', $this->confirm('Would you like a facade?'));

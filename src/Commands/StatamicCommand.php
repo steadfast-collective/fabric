@@ -30,6 +30,10 @@ class StatamicCommand extends Command
             'action'     => $this->option('action'),
         ]);
 
+        if (file_exists($flags->packageDirectory())) {
+            return $this->error("Destination package directory [{$flags->packageDirectory()}] already exists.");
+        }
+
         if ($flags->hasEmptyParams()) {
             $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
             $flags->setParam('config', $this->confirm('Would you like a configuration file?'));

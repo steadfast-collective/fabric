@@ -24,6 +24,10 @@ class PHPCommand extends Command
             'tests' => $this->option('tests'),
         ]);
 
+        if (file_exists($flags->packageDirectory())) {
+            return $this->error("Destination package directory [{$flags->packageDirectory()}] already exists.");
+        }
+
         if ($flags->hasEmptyParams()) {
             $flags->setParam('tests', $this->confirm('Should we setup PHPUnit for you?'));
         }

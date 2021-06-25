@@ -199,6 +199,9 @@ class LaravelCommand extends Command
 
         $this->task('Cleaning up', function () use ($flags) {
             Stubs::deleteStubs($flags);
+
+            $process = new Process(['php-cs-fixer', 'fix', './src', '--rules=@PSR2,@PhpCsFixer'], $flags->packageDirectory());
+            $process->run();
         });
     }
 }
